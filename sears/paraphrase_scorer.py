@@ -266,7 +266,7 @@ class ParaphraseScorer(object):
             # this makes it so one always chooses the unk.
             for zidx, (word, score) in enumerate(zip(src, attn)):
                 word = mapping[zidx]
-                new_unk_scores[word] += score * score_weight
+                new_unk_scores[word] += score.data.cpu().numpy() * score_weight
         # print(sorted(new_unk_scores.items(), key=lambda x:x[1], reverse=True))
         new_unk = max(new_unk_scores.items(),
                       key=operator.itemgetter(1))[0]
@@ -588,7 +588,7 @@ class ParaphraseScorer(object):
                         attn = x['std'].data[0][i]
                         for zidx, (word, score) in enumerate(zip(src, attn)):
                             word = mapping[zidx]
-                            new_unk_scores[word] += score * score_weight
+                            new_unk_scores[word] += score.data.cpu().numpy() * score_weight
                     new_unk = max(new_unk_scores.items(),
                                   key=operator.itemgetter(1))[0]
                 # print (' '.join(self.global_itos[x] for x in prev[i][1:]))
@@ -1059,7 +1059,7 @@ class ParaphraseScorer(object):
                         for zidx, (word, score) in enumerate(zip(src, attn)):
                             # if b.vocab().stoi[word] == onmt.IO.UNK:
                             word = mapping[zidx]
-                            new_unk_scores[word] += score * score_weight
+                            new_unk_scores[word] += score.data.cpu().numpy() * score_weight
                             # print(word, score, score_weight )
                     # print(sorted(new_unk_scores.items(), key=lambda x:x[1], reverse=True))
                     new_unk = max(new_unk_scores.items(),
